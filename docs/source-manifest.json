@@ -1,0 +1,28 @@
+{
+  "source_model": "npc_converter.plecs",
+  "source_saved": "2026-10-16 15:43:25 Asia/Shanghai",
+  "source_sha256": "77345102b9898af5f5a44e96b1057e6c5d2cc3bf5c7bbda4267e3a407ad8148c",
+  "template_sha256": "b6a03eea6ecc19841604435c1504285cb91ef11a0f7a75113eafacabc475091a",
+  "changes": [
+    "Local module mask path",
+    "C-Script header path",
+    "Code generation output path",
+    "CCS path in serialized target settings"
+  ],
+  "control_and_circuit_settings": "preserved; full-text comparison after reversing path changes passed",
+  "module_files": {
+    "anpc_gpio.lua": "83734095defc3dc409cb08d40e93fe3aa09c0595e1eeceef055263590d884bf8",
+    "anpc_gpio_api.h": "1412a81020f64ccd15dded3aba21467324e5e0d85df90ba25c834327f8230bef",
+    "anpc_gpio_core.h": "3f3da893da82f0ef923250e2c1bd8a98d68ca42c641b195cc213862d100b4833",
+    "anpc_gpio_hal.inc": "f64c3bf8f12368b1fa8aa3798610b3b7c1d6be7a262b28a038c58af2a95a0691",
+    "sim_output.c": "e5f3b62a19ae1824e26eb68664c46633dd2b1e387c48e97a74afe093b1c5ea93",
+    "make_module.py": "8a27fdfddf5268aa27c05dfb0034b73e25f3217d2d0fbfcb814416ccdcf581d0"
+  },
+  "firmware": "not distributed; local files generated 2026-10-16 16:10 use 80 kHz PWM, 200 ns dead time and a 50 us control period; ELF generated at 16:11",
+  "manual": {
+    "file": "docs/ANPC.docx",
+    "source": "author-provided Word original",
+    "content": "copied byte-for-byte without editing",
+    "sha256": "b6a61d2d67cf91fe7f8c6cec8c2d832e556d5b0a9e39592088ccb34e25350c18"
+  }
+}

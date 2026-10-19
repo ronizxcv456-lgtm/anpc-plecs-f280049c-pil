@@ -1,0 +1,39 @@
+# PLECS build output and local recovery files
+/codegen/
+**/*_codegen/
+/build/
+/ccs_project/
+/diagnostics/
+/anpc_gpio_module/ANPC_GPIO_Module_v2.plecs
+*.plecs.autosave
+*.autosave
+*.bak
+*.tmp
+
+# Compiler output
+*.obj
+*.o
+*.elf
+*.out
+*.map
+*.d
+*.mk.uptodate
+*_linkInfo.xml
+
+# Machine-specific configuration
+.env
+.env.*
+!.env.example
+*.lic
+*.pem
+*.key
+
+# Python and editor files
+__pycache__/
+*.pyc
+.venv/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+~$*
