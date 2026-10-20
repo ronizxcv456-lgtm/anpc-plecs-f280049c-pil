@@ -54,5 +54,56 @@ class ProjectTests(unittest.TestCase):
             self.assertEqual(output.read_text(encoding="utf-8"), expected)
         self.assertEqual(hashlib.sha256(template.read_bytes()).digest(), digest)
 
+    def test_parallel_droop_paths_and_preserved_controls(self):
+        template = ROOT / "models/anpc_parallel_droop.plecs"
+        original = template.read_text(encoding="utf-8")
+        digest = hashlib.sha256(template.read_bytes()).digest()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "下垂 示例's clone"
+            (root / "models").mkdir(parents=True)
+            shutil.copyfile(template, root / "models" / template.name)
+            shutil.copytree(ROOT / "anpc_gpio_module", root / "anpc_gpio_module")
+            (root / "build").mkdir()
+            single = root / "build/npc_converter.plecs"
+            single.write_text("existing single-inverter edits", encoding="utf-8")
+            output = module.prepare(root, model_name="anpc_parallel_droop")
+            self.assertEqual(output.name, "anpc_parallel_droop.plecs")
+            text = output.read_text(encoding="utf-8")
+            self.assertNotIn("@ANPC_", text)
+            header = (root / "anpc_gpio_module/anpc_gpio_core.h").as_posix()
+            self.assertEqual(text.count(module._fragment(header)), 2)
+            codegen = re.findall(r'(?m)^\s*CodeGenOutputDir "([^"\r\n]+)"', text)
+            expected_dirs = [(root / "build/droop" / ("controller" + str(i)))
+                             for i in (1, 2)]
+            self.assertEqual(codegen, [module._fragment((p / "codegen").as_posix())
+                                      for p in expected_dirs])
+            blocks = [base64.b64decode(x) for x in re.findall(
+                r'(?m)^[ \t]*CodeGenTargetSettings[ \t]+"([^"\r\n]+)"', text)]
+            for directory in expected_dirs:
+                encoded = (directory / "ccs_project/280049/cg").as_posix().encode("utf-16-be")
+                matches = [data for data in blocks if encoded in data]
+                self.assertEqual(len(matches), 1)
+                index = matches[0].index(encoded)
+                self.assertEqual(matches[0][index-4:index], struct.pack(">I", len(encoded)))
+            init_pattern = r"(?ms)InitializationCommands base64 (.*?)(?=^  InitialState)"
+            self.assertEqual(re.search(init_pattern, text)[1],
+                             re.search(init_pattern, original)[1])
+            for name in ("Droop_P", "Droop_Q", "P_Filter", "Q_Filter", "VI_Lv"):
+                pattern = r'^              Component \{\n.*?^              \}'
+                def settings(source):
+                    return [block for block in re.findall(pattern, source, re.M | re.S)
+                            if re.search(r'^                Name\s+"' + name + '"',
+                                         block, re.M)]
+                self.assertEqual(len(settings(text)), 2)
+                self.assertEqual(settings(text), settings(original))
+            output.write_text("local droop edits", encoding="utf-8")
+            with self.assertRaises(FileExistsError):
+                module.prepare(root, model_name="anpc_parallel_droop")
+            self.assertEqual(output.read_text(encoding="utf-8"), "local droop edits")
+            module.prepare(root, force=True, model_name="anpc_parallel_droop")
+            self.assertEqual(output.read_text(encoding="utf-8"), text)
+            self.assertEqual(single.read_text(encoding="utf-8"), "existing single-inverter edits")
+        self.assertEqual(hashlib.sha256(template.read_bytes()).digest(), digest)
+
 if __name__ == "__main__":
     unittest.main()

@@ -24,5 +24,24 @@
     "source": "author-provided Word original",
     "content": "copied byte-for-byte without editing",
     "sha256": "b6a61d2d67cf91fe7f8c6cec8c2d832e556d5b0a9e39592088ccb34e25350c18"
+  },
+  "parallel_droop": {
+    "source_model": "anpc_parallel_droop.plecs",
+    "source_saved": "2026-10-20 16:05:42 Asia/Shanghai",
+    "source_sha256": "9d2cebd0735e78af779a9ca2ac106b52b5c4532cc4a0db0ae7c2b763d37ea269",
+    "template": "models/anpc_parallel_droop.plecs",
+    "template_sha256": "8353b892613004d5d08a7cb4a469c9f20fe1a90b7553fb79aaf4edcf5c2e515d",
+    "changes": [
+      "Module directory and C-Script header paths in both controllers",
+      "Code generation and serialized CCS paths separated for the two controllers"
+    ],
+    "control_and_circuit_settings": "preserved; full-text comparison after reversing all eight path changes passed",
+    "manual": {
+      "file": "docs/ANPC下垂.docx",
+      "sha256": "67674675fe4a735f7120ee0f8fe2f64d3cf145d2a0f021de936b2653450ce474",
+      "content": "author-provided original; copied byte-for-byte"
+    },
+    "preview_images": "extracted unchanged from word/media/image1.png and word/media/image21.png",
+    "verification": "file and path preparation checks; no new PLECS simulation, code generation or dual-target PIL run performed"
   }
 }

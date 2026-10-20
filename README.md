@@ -18,10 +18,23 @@ py scripts/prepare_project.py
 
 脚本需要Python 3.10或更高版本，使用标准库。它只生成本机模型副本，不安装TSP、不编译、不烧录。TSP的自定义Lua入口按[运行步骤](docs/getting-started.md)配置。
 
+## 双机并联下垂控制
+
+新增[双ANPC并联模型](models/anpc_parallel_droop.plecs)，包含两套P–f、Q–V下垂控制、虚拟阻抗和2 s负载阶跃，用于观察电流分配、环流及两机频率变化。模型说明与截图见[并联下垂控制](docs/parallel-droop.md)，完整截图保留在[ANPC下垂 Word原稿](docs/ANPC下垂.docx)中。
+
+```powershell
+py scripts/prepare_project.py --model anpc_parallel_droop
+```
+
+然后打开`build/anpc_parallel_droop.plecs`。两套控制器的本机路径分别填入，代码生成目录互相独立。未指定`--model`时仍准备原单机模型。
+
+## 单机PIL记录
+
 已核对2026年10月16日16:10生成的80 kHz、200 ns死区代码，ELF于16:11生成。作者提供了配置步骤、PIL仿真结果和逻辑分析仪截图，见[配置手册与仿真结果](docs/ANPC.docx)。原始波形数据及逐项测量记录尚未收录。
 
 ## 文档
 
+- [并联下垂控制](docs/parallel-droop.md)：模型准备、下垂参数、测量位置与作者提供的波形。
 - [配置手册与仿真结果 Word原稿](docs/ANPC.docx)：作者的配置截图、操作记录和仿真波形，按原文件收录；技术校核见下方验证记录。
 - [运行步骤](docs/getting-started.md)：软件依赖、模块路径、构建与PIL接口。
 - [控制器说明](docs/controller.md)：模块作用、公式、PI参数和PWM时序。
